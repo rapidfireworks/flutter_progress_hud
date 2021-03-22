@@ -54,9 +54,11 @@ class _ProgressHUDState extends State<ProgressHUD>
   @override
   void initState() {
     _animation.addStatusListener((status) {
-      setState(() {
-        _barrierVisible = status != AnimationStatus.dismissed;
-      });
+      if (mounted) {
+        setState(() {
+          _barrierVisible = status != AnimationStatus.dismissed;
+        });
+      }
     });
 
     super.initState();
@@ -91,7 +93,10 @@ class _ProgressHUDState extends State<ProgressHUD>
             child: Stack(children: [
               Visibility(
                 visible: _barrierVisible,
-                child: ModalBarrier(color: Colors.transparent),
+                child: ModalBarrier(
+                  color: Colors.transparent,
+                  dismissible: false,
+                ),
               ),
               Center(child: _buildProgress()),
             ]),
